@@ -1,10 +1,18 @@
 import './sass/main.scss';
 
-function pad(value) {
+interface Timer {
+  selector: string;
+  targetDate: any
+}
+
+function pad(value: string | number) {
   return String(value).padStart(2, '0');
 }
 class CountdownTimer {
-  constructor({ selector, targetDate }) {
+  public selector: string;
+  public intervalId: NodeJS.Timer;
+  public targetDate:  number ;
+  constructor({ selector, targetDate }: Timer) {
     this.selector = selector;
     this.intervalId = null;
     this.targetDate = targetDate;
@@ -13,10 +21,10 @@ class CountdownTimer {
     this.intervalId = setInterval(() => {
       const currentTime = Date.now();
       const time = this.targetDate - currentTime;
-      const days = Math.floor(time / (1000 * 60 * 60 * 24));
-      const hours = pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-      const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-      const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
+      const days : number | string = Math.floor(time / (1000 * 60 * 60 * 24));
+      const hours: number | string  = pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+      const mins: number | string  = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+      const secs: number | string  = pad(Math.floor((time % (1000 * 60)) / 1000));
       if (this.targetDate <= currentTime) {
         clearInterval(this.intervalId);
       } else {
